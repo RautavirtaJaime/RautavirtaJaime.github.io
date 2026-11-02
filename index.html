@@ -1,485 +1,84 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fi">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Jaime Rautavirta — IT & Asiakasratkaisut</title>
-<meta name="description" content="Jaime Rautavirta — IT-tekniikka, laadunvalvonta ja asiakaskoordinointi. Vantaa/Tuusula.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<style>
-  :root{
-    --bg:#F5F6F8;
-    --surface:#FFFFFF;
-    --ink:#131A26;
-    --ink-muted:#55606E;
-    --accent:#2456DB;
-    --accent-soft:#E7EDFB;
-    --line:#DFE3E9;
-    --radius:10px;
-    --maxw:920px;
-  }
-  *{box-sizing:border-box;}
-  html{scroll-behavior:smooth;}
-  body{
-    margin:0;
-    background:var(--bg);
-    color:var(--ink);
-    font-family:'Inter',sans-serif;
-    font-size:16px;
-    line-height:1.6;
-    -webkit-font-smoothing:antialiased;
-  }
-  h1,h2,h3{
-    font-family:'Space Grotesk',sans-serif;
-    margin:0;
-    color:var(--ink);
-    letter-spacing:-0.01em;
-  }
-  .mono{
-    font-family:'IBM Plex Mono',monospace;
-  }
-  a{color:inherit;}
-  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 28px;}
-
-  /* background grid texture */
-  .grid-bg{
-    position:fixed;inset:0;z-index:-1;
-    background-image:
-      linear-gradient(var(--line) 1px, transparent 1px),
-      linear-gradient(90deg, var(--line) 1px, transparent 1px);
-    background-size:64px 64px;
-    opacity:0.35;
-    mask-image:linear-gradient(to bottom, black, transparent 85%);
-  }
-
-  /* NAV */
-  header.nav{
-    position:sticky;top:0;z-index:20;
-    background:rgba(245,246,248,0.85);
-    backdrop-filter:blur(10px);
-    border-bottom:1px solid var(--line);
-  }
-  header.nav .wrap{
-    display:flex;align-items:center;justify-content:space-between;
-    height:64px;
-  }
-  .brand{
-    font-family:'Space Grotesk',sans-serif;
-    font-weight:700;font-size:17px;
-    display:flex;align-items:center;gap:8px;
-  }
-  .brand .dot{width:8px;height:8px;background:var(--accent);border-radius:2px;display:inline-block;}
-  nav.links{display:flex;gap:28px;font-size:14px;font-weight:500;}
-  nav.links a{text-decoration:none;color:var(--ink-muted);transition:color .15s;}
-  nav.links a:hover{color:var(--accent);}
-
-  /* HERO */
-  .hero{padding:96px 0 72px;}
-  .eyebrow{
-    display:inline-flex;align-items:center;gap:8px;
-    font-family:'IBM Plex Mono',monospace;
-    font-size:12.5px;letter-spacing:.06em;text-transform:uppercase;
-    color:var(--accent);background:var(--accent-soft);
-    padding:6px 12px;border-radius:100px;margin-bottom:22px;
-  }
-  .eyebrow::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--accent);}
-  .hero h1{font-size:clamp(38px,6vw,58px);line-height:1.05;font-weight:700;max-width:760px;}
-  .hero .role{color:var(--accent);}
-  .hero p.lede{
-    margin-top:22px;font-size:18px;color:var(--ink-muted);max-width:560px;
-  }
-  .hero .actions{display:flex;gap:14px;margin-top:34px;flex-wrap:wrap;}
-  .btn{
-    font-family:'Inter',sans-serif;font-weight:600;font-size:14.5px;
-    padding:13px 22px;border-radius:8px;text-decoration:none;
-    display:inline-flex;align-items:center;gap:8px;
-    transition:transform .15s ease, box-shadow .15s ease;
-  }
-  .btn-primary{background:var(--ink);color:#fff;}
-  .btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(19,26,38,.18);}
-  .btn-ghost{background:var(--surface);color:var(--ink);border:1px solid var(--line);}
-  .btn-ghost:hover{transform:translateY(-2px);border-color:var(--accent);}
-
-  .hero-meta{
-    margin-top:56px;display:grid;grid-template-columns:repeat(3,1fr);
-    border-top:1px solid var(--line);padding-top:24px;gap:20px;
-  }
-  .hero-meta div .k{font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:var(--ink-muted);text-transform:uppercase;letter-spacing:.06em;}
-  .hero-meta div .v{margin-top:4px;font-weight:600;font-size:15px;}
-
-  /* SECTIONS */
-  section{padding:64px 0;}
-  .section-head{display:flex;align-items:baseline;gap:14px;margin-bottom:36px;}
-  .section-head .num{font-family:'IBM Plex Mono',monospace;color:var(--accent);font-size:14px;}
-  .section-head h2{font-size:26px;}
-  .section-sub{color:var(--ink-muted);font-size:14.5px;margin-top:6px;}
-
-  /* TIMELINE */
-  .timeline{position:relative;padding-left:28px;border-left:2px solid var(--line);}
-  .tl-item{position:relative;padding-bottom:44px;}
-  .tl-item:last-child{padding-bottom:0;}
-  .tl-badge{
-    position:absolute;left:-38px;top:2px;
-    width:20px;height:20px;border-radius:5px;
-    background:var(--surface);border:2px solid var(--accent);
-    display:flex;align-items:center;justify-content:center;
-  }
-  .tl-badge.current{background:var(--accent);}
-  .tl-badge::after{content:'';width:6px;height:6px;background:var(--accent);border-radius:1px;}
-  .tl-badge.current::after{background:#fff;}
-  .tl-card{
-    background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
-    padding:24px 26px;
-  }
-  .tl-top{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px;margin-bottom:4px;}
-  .tl-role{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:17px;}
-  .tl-org{color:var(--ink-muted);font-size:14px;margin-top:2px;}
-  .tl-date{font-family:'IBM Plex Mono',monospace;font-size:12.5px;color:var(--ink-muted);white-space:nowrap;padding-top:4px;}
-  .tl-tag{
-    display:inline-block;margin-top:10px;margin-right:6px;
-    font-family:'IBM Plex Mono',monospace;font-size:11px;
-    background:var(--accent-soft);color:var(--accent);
-    padding:3px 9px;border-radius:100px;
-  }
-  .tl-list{margin:14px 0 0;padding-left:18px;color:var(--ink);font-size:14.5px;}
-  .tl-list li{margin-bottom:7px;}
-  .tl-list li::marker{color:var(--accent);}
-
-  /* SKILLS */
-  .skills-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px;}
-  .skill-card{
-    background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
-    padding:20px 22px;
-  }
-  .skill-card h3{font-size:14px;font-family:'IBM Plex Mono',monospace;color:var(--accent);text-transform:uppercase;letter-spacing:.04em;margin-bottom:12px;}
-  .chip-row{display:flex;flex-wrap:wrap;gap:8px;}
-  .chip{
-    font-size:13.5px;padding:6px 12px;border-radius:7px;
-    background:var(--bg);border:1px solid var(--line);
-  }
-
-  /* PROJECTS */
-  .projects-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
-  .project-card{
-    background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
-    padding:24px 26px;
-  }
-  .project-card .tag{
-    font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--accent);
-    text-transform:uppercase;letter-spacing:.05em;
-  }
-  .project-card h3{margin-top:10px;font-size:18px;}
-  .project-card p{color:var(--ink-muted);font-size:14.5px;margin-top:10px;}
-
-  /* EDUCATION */
-  .edu-row{
-    display:flex;justify-content:space-between;align-items:baseline;
-    padding:16px 0;border-bottom:1px solid var(--line);flex-wrap:wrap;gap:6px;
-  }
-  .edu-row:last-child{border-bottom:none;}
-  .edu-school{font-weight:600;font-family:'Space Grotesk',sans-serif;font-size:16px;}
-  .edu-degree{color:var(--ink-muted);font-size:14px;margin-top:2px;}
-  .edu-date{font-family:'IBM Plex Mono',monospace;font-size:12.5px;color:var(--ink-muted);}
-
-  /* PERSONAL STRIP */
-  .personal{
-    display:grid;grid-template-columns:1.1fr 1fr;gap:32px;align-items:center;
-    background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);
-    padding:8px;overflow:hidden;
-  }
-  .personal img{
-    width:100%;height:260px;object-fit:cover;border-radius:calc(var(--radius) - 4px);display:block;
-  }
-  .personal .personal-copy{padding:20px 26px 20px 4px;}
-  .personal .tag{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--accent);text-transform:uppercase;letter-spacing:.05em;}
-  .personal h3{font-size:19px;margin-top:10px;}
-  .personal p{color:var(--ink-muted);font-size:14.5px;margin-top:10px;}
-  @media (max-width:760px){
-    .personal{grid-template-columns:1fr;}
-    .personal .personal-copy{padding:4px 20px 20px;}
-  }
-
-  /* CONTACT / FOOTER */
-  footer{
-    background:var(--ink);color:#fff;padding:64px 0 40px;margin-top:40px;
-  }
-  footer h2{color:#fff;font-size:28px;max-width:480px;}
-  footer p{color:#AEB6C4;margin-top:14px;max-width:440px;}
-  .contact-grid{display:flex;gap:40px;margin-top:40px;flex-wrap:wrap;}
-  .contact-item .k{font-family:'IBM Plex Mono',monospace;font-size:11px;color:#7C8AA3;text-transform:uppercase;letter-spacing:.06em;}
-  .contact-item a, .contact-item span{display:block;margin-top:6px;font-weight:600;text-decoration:none;color:#fff;font-size:15px;}
-  .contact-item a:hover{color:var(--accent-soft);}
-  .foot-bottom{
-    margin-top:56px;padding-top:24px;border-top:1px solid rgba(255,255,255,0.12);
-    display:flex;justify-content:space-between;color:#7C8AA3;font-size:12.5px;flex-wrap:wrap;gap:10px;
-    font-family:'IBM Plex Mono',monospace;
-  }
-
-  /* avatar */
-  .avatar-slot{
-    width:112px;height:112px;border-radius:14px;
-    overflow:hidden;margin-bottom:28px;
-    border:1px solid var(--line);
-    box-shadow:0 6px 18px rgba(19,26,38,0.10);
-  }
-  .avatar-slot img{
-    width:100%;height:100%;object-fit:cover;object-position:50% 18%;
-    display:block;
-  }
-
-  /* reveal animation */
-  .reveal{opacity:0;transform:translateY(16px);transition:opacity .6s ease, transform .6s ease;}
-  .reveal.in{opacity:1;transform:none;}
-  @media (prefers-reduced-motion: reduce){
-    .reveal{opacity:1;transform:none;transition:none;}
-    html{scroll-behavior:auto;}
-  }
-
-  @media (max-width:760px){
-    nav.links{display:none;}
-    .hero{padding:64px 0 48px;}
-    .hero-meta{grid-template-columns:1fr;gap:16px;}
-    .projects-grid{grid-template-columns:1fr;}
-    .contact-grid{gap:28px;}
-  }
-
-  :focus-visible{outline:2px solid var(--accent);outline-offset:3px;}
-</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#eeeee6">
+  <title>Jaime Rautavirta — Tekniikkaa. Ihmisiä. Ratkaisuja.</title>
+  <meta name="description" content="Jaime Rautavirta, Tuusula. Käytännön IT-osaamista, asiakasratkaisuja ja kiertotaloutta. Tutustu kokemukseeni ja interaktiiviseen portfoliooni.">
+  <meta property="og:title" content="Jaime Rautavirta — Tekniikkaa. Ihmisiä. Ratkaisuja.">
+  <meta property="og:description" content="Teknisestä ongelmasta toimivaksi ratkaisuksi. Tutustu Jaimeen, IT-osaamiseen ja kokemukseen.">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="fi_FI">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;450;500;550;600;650;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/portfolio.css">
+  <script src="assets/portfolio.js" defer></script>
 </head>
 <body>
-
-<div class="grid-bg"></div>
-
-<header class="nav">
-  <div class="wrap">
-    <div class="brand"><span class="dot"></span>Jaime Rautavirta</div>
-    <nav class="links">
-      <a href="#kokemus">Kokemus</a>
-      <a href="#osaaminen">Osaaminen</a>
-      <a href="#projektit">Projektit</a>
-      <a href="#koulutus">Koulutus</a>
-      <a href="#yhteystiedot">Yhteystiedot</a>
-    </nav>
-  </div>
+<a href="#main" class="skip-link">Siirry sisältöön</a>
+<div class="reading-progress" aria-hidden="true"></div>
+<header class="site-header">
+  <a class="wordmark" href="#alku" aria-label="Jaime Rautavirta, alkuun"><span class="brand-symbol">jr<span>↗</span></span><span>JAIME<br>RAUTAVIRTA</span></a>
+  <nav class="desktop-nav" aria-label="Päävalikko"><a href="#osaaminen">Osaaminen</a><a href="#tekeminen">Tekeminen</a><a href="#matka">Matka</a></nav>
+  <div class="header-actions"><button id="motion-toggle" class="icon-button" aria-label="Pysäytä animaatiot" aria-pressed="false" title="Pysäytä animaatiot"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M9 5v14M15 5v14"/></svg></button><a class="contact-nav" href="#yhteys">Jutellaanko? <span>↗</span></a><button class="menu-toggle icon-button" aria-expanded="false" aria-controls="mobile-nav" aria-label="Avaa valikko"><svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M4 8h16M4 16h16"/></svg></button></div>
 </header>
-
-<section class="hero">
-  <div class="wrap">
-    <div class="avatar-slot"><img src="images/jaime.jpg" alt="Jaime Rautavirta"></div>
-    <span class="eyebrow">Saatavilla uusiin mahdollisuuksiin</span>
-    <h1>IT-tausta, tarkka silmä laadulle,<br> ja taito rakentaa <span class="role">asiakassuhteita</span>.</h1>
-    <p class="lede">Neljän vuoden kokemus laitteiden testauksesta, tietoturvasta ja asiakaskoordinoinnista — nyt suuntana teknologian ja myynnin risteyskohta.</p>
-    <div class="actions">
-      <a class="btn btn-primary" href="mailto:rautavirtajaime@gmail.com">Ota yhteyttä ↗</a>
-      <a class="btn btn-ghost" href="#kokemus">Katso kokemukset</a>
+<nav id="mobile-nav" class="mobile-nav" aria-label="Mobiilivalikko" hidden><a href="#osaaminen">Osaaminen <span>01</span></a><a href="#tekeminen">Tekeminen <span>02</span></a><a href="#matka">Matka <span>03</span></a><a href="#yhteys">Yhteys <span>↗</span></a></nav>
+<main id="main">
+  <section class="hero section-wrap" id="alku" aria-labelledby="hero-title">
+    <div class="hero-copy">
+      <div class="eyebrow"><span class="status-dot"></span> IT · ASIAKASRATKAISUT · KIERTOTALOUS</div>
+      <h1 id="hero-title">Kädet<br>tekniikassa.<br><span class="hero-italic">Katse ihmisissä<span class="accent-period">.</span></span></h1>
+      <p class="hero-description">Moi, olen Jaime. Ratkon teknisiä ongelmia ja autan ihmisiä eteenpäin. Tuotannon työpöydältä asiakaskohtaamisiin — ymmärrän molemmat puolet.</p>
+      <div class="hero-actions"><a class="button button-dark" href="#osaaminen">Tutki osaamistani <span>↓</span></a><a href="mailto:rautavirtajaime@gmail.com" class="text-link">Ota yhteyttä <span>↗</span></a></div>
+      <div class="hero-location"><span class="crosshair" aria-hidden="true">✳</span> TUUSULA, SUOMI <span class="location-divider">/</span> UTELIAS OLETUKSENA</div>
     </div>
-
-    <div class="hero-meta">
-      <div><div class="k">Sijainti</div><div class="v">Tuusula, Suomi</div></div>
-      <div><div class="k">Nykyinen rooli</div><div class="v">IT Technician @ Inrego</div></div>
-      <div><div class="k">Kielet</div><div class="v">FIN · ENG · SWE</div></div>
+    <div class="hero-lab" data-mode="it">
+      <div class="lab-top"><span><span class="live-dot"></span> JAIME LAB</span><span>INTERAKTIIVINEN / 01</span></div>
+      <div class="orbit-label orbit-label-top"><span class="tiny-cross">+</span> HANDS-ON MINDSET</div>
+      <canvas id="lab-canvas" aria-label="Pyöritettävä 3D-kannettava. Vedä hiirellä tai käytä nuolinäppäimiä. Tilapainikkeet esittelevät osaamisalueet." role="img" tabindex="0"></canvas>
+      <div class="lab-coordinate" aria-hidden="true">X <span id="coord-x">024°</span><br>Y <span id="coord-y">018°</span></div>
+      <div class="portrait-note"><img src="images/jaime.jpg" alt="Jaime Rautavirta" width="660" height="752" fetchpriority="high"><div><span>Moi, Jaime tässä.</span><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M5 22c4-10 7-15 11-15 7 0 6 18 12 14M4 25c8-3 15-6 24-6"/></svg></div></div>
+      <div class="lab-controls"><div class="mode-switch" role="group" aria-label="Valitse työpöydän näkökulma"><button class="mode-button active" data-mode="it" aria-pressed="true">01 Tekniikka</button><button class="mode-button" data-mode="people" aria-pressed="false">02 Ihmiset</button><button class="mode-button" data-mode="reuse" aria-pressed="false">03 Uusi käyttö</button></div><span class="drag-hint"><span>↔</span> Vedä ja pyöritä</span></div>
+      <div class="lab-caption" aria-live="polite"><span id="lab-caption-label">LAITE KÄTEEN. ONGELMA RATKAISTAAN.</span><span class="lab-caption-index">[<span id="mode-index">01</span>]</span></div>
     </div>
-  </div>
-</section>
-
-<section id="kokemus">
-  <div class="wrap">
-    <div class="section-head reveal">
-      <span class="num">01</span>
-      <div><h2>Kokemus</h2><div class="section-sub">Kronologinen aikajana, uusimmasta vanhimpaan</div></div>
+  </section>
+  <div class="experience-strip section-wrap"><p>TEKNIIKAN JA IHMISTEN VÄLISSÄ</p><div><span class="company-name">inrego<span class="company-dot">.</span></span><span class="strip-separator"></span><span class="company-name grano-name">GRANO</span><span class="strip-separator"></span><span class="metropolia-name">Metropolia<span>University of Applied Sciences</span></span></div><a href="#matka">Tutustu matkaani <span>↘</span></a></div>
+  <section class="intro section-wrap" aria-labelledby="intro-title"><div class="section-kicker"><span>01 / YHDISTELMÄ</span><span class="asterisk">✳</span></div><div class="intro-content"><h2 id="intro-title">Hyvä ratkaisu toimii<br>laitteessa.<br><span class="muted">Ja ihmisen arjessa.</span></h2><div class="intro-description"><p>Olen kulkenut IT-laitteiden testauksesta ja tietoturvallisesta käsittelystä yritysasiakkaiden buyback-ratkaisuihin. Siksi osaan keskustella sekä laitteesta että tarpeesta sen takana.</p><p>Tykkään ottaa selvää, tehdä itse ja viedä asiat loppuun. Uusi tekniikka kiinnostaa, mutta paras hetki on se, kun ratkaisu oikeasti auttaa jotakuta.</p><div class="intro-facts"><div><strong>~4 v</strong><span>käytännön IT-työtä</span></div><div><strong>IT + ihmiset</strong><span>saman pöydän ääressä</span></div></div></div></div></section>
+  <section class="skills-section" id="osaaminen" aria-labelledby="skills-title">
+    <div class="section-wrap"><div class="section-kicker light"><span>02 / TYÖKALUPAKKI</span><span>VALITSE NÄKÖKULMA ↘</span></div>
+      <div class="skills-layout"><div class="skills-left"><h2 id="skills-title">Yksi tyyppi.<br><span>Monta työkalua.</span></h2><p>Osaaminen rakentuu tekemällä. Tässä asiat, joihin olen oikeasti tarttunut.</p><div class="skill-tabs" role="tablist" aria-label="Osaamisalueet" aria-orientation="vertical"><button role="tab" id="tab-devices" aria-selected="true" aria-controls="panel-devices" class="skill-tab active"><span class="tab-number">01</span> IT & laitteet <span class="tab-arrow">↗</span></button><button role="tab" id="tab-security" aria-selected="false" aria-controls="panel-security" tabindex="-1" class="skill-tab"><span class="tab-number">02</span> Tietoturva & hallinta <span class="tab-arrow">↗</span></button><button role="tab" id="tab-development" aria-selected="false" aria-controls="panel-development" tabindex="-1" class="skill-tab"><span class="tab-number">03</span> Koodi & kehitys <span class="tab-arrow">↗</span></button><button role="tab" id="tab-people" aria-selected="false" aria-controls="panel-people" tabindex="-1" class="skill-tab"><span class="tab-number">04</span> Asiakkaat & kiertotalous <span class="tab-arrow">↗</span></button></div></div>
+      <div class="skill-panels">
+        <article class="skill-panel" id="panel-devices" role="tabpanel" aria-labelledby="tab-devices" tabindex="0"><div class="panel-icon" aria-hidden="true"><svg viewBox="0 0 100 80" fill="none" stroke="currentColor" stroke-width="2"><rect x="16" y="9" width="68" height="45" rx="4"/><path d="M9 62h82l-5 8H14l-5-8ZM29 23h18m-18 9h35m-35 9h24"/></svg></div><span class="panel-eyebrow">KÄYTÄNNÖN KOKEMUSTA</span><h3>Vian etsinnästä<br>takaisin käyttöön.</h3><p>Kannettavat, pöytäkoneet ja mobiililaitteet ovat tuttuja tuotannon työpöydältä. Osaan testata, selvittää vikoja ja arvioida laitteen kuntoa.</p><ul><li>Windows- ja macOS-ympäristöt</li><li>Toiminnallinen testaus ja laatuluokittelu</li><li>Vianmääritys ja haastavat käsittelytapaukset</li><li>Käyttäjätuki ja laitteiden käyttöönotto</li></ul><div class="skill-tags"><span>Windows</span><span>macOS</span><span>Android</span><span>iOS</span></div><div class="panel-foot"><span>OSAAMISTA KÄYTÄNNÖN TYÖSTÄ.</span><span>01 / 04</span></div></article>
+        <article class="skill-panel" id="panel-security" role="tabpanel" aria-labelledby="tab-security" tabindex="0" hidden><div class="panel-icon" aria-hidden="true"><svg viewBox="0 0 100 80" fill="none" stroke="currentColor" stroke-width="2"><path d="m50 7 29 12v22c0 16-29 30-29 30S21 57 21 41V19L50 7Z"/><path d="m36 38 10 10 20-24"/></svg></div><span class="panel-eyebrow">TIETOJEN KANSSA TARKKANA</span><h3>Turvallisuus kuuluu<br>koko elinkaareen.</h3><p>Olen käsitellyt yritysten laitteita, niiden tietoturvallista tyhjennystä ja hallintalukituksiin liittyviä tapauksia osana tuotantoprosessia.</p><ul><li>Blancco-tyhjennys ja käsittelyn dokumentointi</li><li>Active Directory / AD DS ja laitehallinta</li><li>Hallintalukitusten selvittely asiakkaan kanssa</li><li>Tietosuojan huomioiminen käytännön työssä</li></ul><div class="skill-tags"><span>Blancco</span><span>AD DS</span><span>MDM</span><span>Knox</span></div><div class="panel-foot"><span>HUOLELLISUUS ON TYÖTAPA.</span><span>02 / 04</span></div></article>
+        <article class="skill-panel" id="panel-development" role="tabpanel" aria-labelledby="tab-development" tabindex="0" hidden><div class="panel-icon" aria-hidden="true"><svg viewBox="0 0 100 80" fill="none" stroke="currentColor" stroke-width="2"><path d="m31 23-18 17 18 17m38-34 18 17-18 17M57 12 43 68"/></svg></div><span class="panel-eyebrow">UTELIAISUUS MUUTTUU KOODIKSI</span><h3>Kun jokin toistuu,<br>voisiko sen automatisoida?</h3><p>Syvennän ohjelmointi- ja järjestelmäosaamistani Metropolian insinööriopinnoissa sekä omissa kokeiluissa. Minua kiinnostavat erityisesti web, automaatio ja tekoälyn käytännön sovellukset.</p><ul><li>JavaScript, HTML ja CSS</li><li>Python, SQL ja C# osana opintoja</li><li>Node.js, Express ja MongoDB</li><li>Tietoturvan ja tekoälyn opintoja</li></ul><div class="skill-tags"><span>JavaScript</span><span>Python</span><span>SQL</span><span>Node.js</span></div><div class="panel-foot"><span>JATKUVASTI KESKEN. HYVÄLLÄ TAVALLA.</span><span>03 / 04</span></div></article>
+        <article class="skill-panel" id="panel-people" role="tabpanel" aria-labelledby="tab-people" tabindex="0" hidden><div class="panel-icon" aria-hidden="true"><svg viewBox="0 0 100 80" fill="none" stroke="currentColor" stroke-width="2"><path d="M28 29a23 23 0 0 1 44-1m0 22a23 23 0 0 1-44 1M72 14v16H56M28 66V50h16"/></svg></div><span class="panel-eyebrow">LAITTEILLE UUSI LUKU</span><h3>Tekninen ymmärrys.<br>Inhimillinen ote.</h3><p>Nykyisessä buyback-roolissani autan yrityksiä käytöstä poistuvien IT-laitteiden kanssa. Tunnen myös sen, mitä laitteelle tapahtuu asiakaskohtaamisen jälkeen.</p><ul><li>B2B-asiakkuudet ja tarpeiden kartoittaminen</li><li>Noutojen ja laite-erien koordinointi</li><li>Asiakasportaali, raportointi ja hyvitykset</li><li>Laitteiden uudelleenkäyttö ja kiertotalous</li></ul><div class="skill-tags"><span>Buyback</span><span>CRM</span><span>Asiakastyö</span><span>Kiertotalous</span></div><div class="panel-foot"><span>TEKNIIKKA TOIMII IHMISTEN KAUTTA.</span><span>04 / 04</span></div></article>
+      </div></div>
     </div>
-
-    <div class="timeline">
-      <div class="tl-item reveal">
-        <div class="tl-badge current"></div>
-        <div class="tl-card">
-          <div class="tl-top">
-            <div><div class="tl-role">IT Technician</div><div class="tl-org">Inrego Oy — Vantaa</div></div>
-            <div class="tl-date">2022 — nyt</div>
-          </div>
-          <span class="tl-tag">Blancco</span><span class="tl-tag">Laadunvalvonta</span><span class="tl-tag">Prosessikehitys</span>
-          <ul class="tl-list">
-            <li>Useita rooleja laitteiden käsittelyprosessissa: mobiili- ja IT-laitteiden toiminnallinen testaus.</li>
-            <li>Tietojen turvallinen ylikirjoitus Blancco-ohjelmistolla, varmistaen laitteiden vaatimustenmukaisuuden.</li>
-            <li>Lukittujen ja estettyjen laitteiden käsittely ja palautus normaaliin prosessiin.</li>
-            <li>Laitteiden laatuluokittelu sekä monimutkaisempien "slow lane" -tapausten käsittely.</li>
-            <li>Tuotantolinjan inventaarion ylläpito ja tarkka kirjanpito laitevirrasta.</li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="tl-item reveal">
-        <div class="tl-badge"></div>
-        <div class="tl-card">
-          <div class="tl-top">
-            <div><div class="tl-role">Founder</div><div class="tl-org">Rautavirta Tmi — Vantaa</div></div>
-            <div class="tl-date">2022 — 2024</div>
-          </div>
-          <span class="tl-tag">Web</span><span class="tl-tag">SEO</span><span class="tl-tag">Asennus</span>
-          <ul class="tl-list">
-            <li>Suunnitteli ja toteutti mainoksia ja verkkosivuja asiakkaiden tarpeisiin.</li>
-            <li>Vastasi hakukoneoptimoinnista (SEO) sekä asiakasprojektien asennustöistä.</li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="tl-item reveal">
-        <div class="tl-badge"></div>
-        <div class="tl-card">
-          <div class="tl-top">
-            <div><div class="tl-role">Customer Coordinator</div><div class="tl-org">Grano Oy — Jyväskylä / Helsinki</div></div>
-            <div class="tl-date">2016 — 2022</div>
-          </div>
-          <span class="tl-tag">Asiakastyö</span><span class="tl-tag">Koordinointi</span>
-          <ul class="tl-list">
-            <li>Asiakastapaamiset paikan päällä tarpeiden kartoittamiseksi ja oikean ratkaisun suosittelemiseksi.</li>
-            <li>Ratkaisujen suunnittelu ja asennus asiakaskohtaisesti, aina ensikontaktista valmiiseen lopputulokseen.</li>
-            <li>Tiivis yhteistyö tekniikan kanssa, mukaan lukien asennustiimin reaaliaikaisen seurantasovelluksen kehitys.</li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="tl-item reveal">
-        <div class="tl-badge"></div>
-        <div class="tl-card">
-          <div class="tl-top">
-            <div><div class="tl-role">Construction Worker</div><div class="tl-org">Staar — Jyväskylä</div></div>
-            <div class="tl-date">2012 — 2015</div>
-          </div>
-          <ul class="tl-list">
-            <li>Oppisopimus, keskittyen rakennusten peruskorjauksiin ja kylpyhuoneremontteihin.</li>
-          </ul>
-        </div>
-      </div>
+  </section>
+  <section class="work section-wrap" id="tekeminen" aria-labelledby="work-title"><div class="section-kicker"><span>03 / TEKEMINEN PUHUU</span><span>TYÖSTÄ & OPINNOISTA</span></div><div class="section-title-row"><h2 id="work-title">Tekemistä,<br><span class="muted">joka näkyy.</span></h2><p>Muutama esimerkki siitä, mihin olen ollut mukana tuomassa ratkaisuja.</p></div>
+    <div class="work-list">
+      <button class="work-row" data-case="inrego"><span class="work-num">01</span><div class="work-title"><span class="work-category">INREGO / TUOTANTO</span><h3>Laitteelle uusi elämä.</h3><p>Testaus, tietoturvallinen tyhjennys ja laadunvarmistus.</p></div><div class="work-art art-device" aria-hidden="true"><div class="mini-screen"><span>↗</span></div><div class="mini-base"></div></div><span class="work-open" aria-label="Lue lisää">↗</span></button>
+      <button class="work-row" data-case="grano"><span class="work-num">02</span><div class="work-title"><span class="work-category">GRANO / ASIAKASTYÖ & KEHITYS</span><h3>Työmaa taskussa.</h3><p>Mukana asennustiimin mobiilisovelluksen kehitystyössä.</p></div><div class="work-art art-app" aria-hidden="true"><div class="mini-app"><i></i><i></i><i></i><span>✓</span></div></div><span class="work-open" aria-label="Lue lisää">↗</span></button>
+      <button class="work-row" data-case="learning"><span class="work-num">03</span><div class="work-title"><span class="work-category">METROPOLIA / OMA OPPIMINEN</span><h3>Seuraava versio.</h3><p>Web-kehitystä, tietoturvaa ja tekoälyn käytäntöä.</p></div><div class="work-art art-code" aria-hidden="true"><span>{</span><span>_</span><span>}</span></div><span class="work-open" aria-label="Lue lisää">↗</span></button>
     </div>
-  </div>
-</section>
-
-<section id="osaaminen">
-  <div class="wrap">
-    <div class="section-head reveal">
-      <span class="num">02</span>
-      <div><h2>Osaaminen</h2><div class="section-sub">Tekninen ja liiketoiminnallinen työkalupakki</div></div>
-    </div>
-    <div class="skills-grid">
-      <div class="skill-card reveal">
-        <h3>Ohjelmointi</h3>
-        <div class="chip-row">
-          <span class="chip">JavaScript</span><span class="chip">SQL</span><span class="chip">Python</span>
-          <span class="chip">HTML/CSS</span><span class="chip">C#</span><span class="chip">Node.js</span>
-        </div>
-      </div>
-      <div class="skill-card reveal">
-        <h3>Data & työkalut</h3>
-        <div class="chip-row">
-          <span class="chip">Tietokannat</span><span class="chip">Excel</span><span class="chip">Power BI</span><span class="chip">Word</span>
-        </div>
-      </div>
-      <div class="skill-card reveal">
-        <h3>Riski & tietoturva</h3>
-        <div class="chip-row">
-          <span class="chip">GDPR</span><span class="chip">Tietosuoja</span><span class="chip">ISO-sertifioinnit</span>
-        </div>
-      </div>
-      <div class="skill-card reveal">
-        <h3>IT-tuki</h3>
-        <div class="chip-row">
-          <span class="chip">Verkkokonfiguraatiot</span><span class="chip">Järjestelmänvalvonta</span><span class="chip">Käyttäjätuki</span>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section id="projektit">
-  <div class="wrap">
-    <div class="section-head reveal">
-      <span class="num">03</span>
-      <div><h2>Projektit</h2><div class="section-sub">Poimintoja tekemisestä</div></div>
-    </div>
-    <div class="projects-grid">
-      <div class="project-card reveal">
-        <span class="tag">Prosessikehitys · Inrego</span>
-        <h3>Laitteiden kunnostusprosessi</h3>
-        <p>Osa Inregon tuotantolinjaa, jossa yrityksiltä ostetut käytetyt laitteet käyvät läpi Blancco-ylikirjoituksen, toiminnallisen testauksen, laatuluokittelun ja monimutkaisemmille tapauksille oman slow lane -prosessin ennen jälleenmyyntiä. Mukana myös teollisen tason kehitystyössä, mm. mobiililaitteiden automatisoinnissa aktivoitumaan itsestään Blancco-ylikirjoituksen jälkeen — nopeuttaen laitteiden kulkua linjalla.</p>
-      </div>
-      <div class="project-card reveal">
-        <span class="tag">Sovelluskehitys · Grano</span>
-        <h3>Asennustiimin mobiilisovellus</h3>
-        <p>Työskenteli Granon teknisen tiimin kanssa mobiilisovelluksen parissa, joka antoi asennustiimille reaaliaikaisen näkymän aikataulutettuihin tehtäviin ja projektien tilaan.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section id="koulutus">
-  <div class="wrap">
-    <div class="section-head reveal">
-      <span class="num">04</span>
-      <div><h2>Koulutus</h2><div class="section-sub">&nbsp;</div></div>
-    </div>
-    <div class="reveal">
-      <div class="edu-row">
-        <div><div class="edu-school">Metropolia Ammattikorkeakoulu</div><div class="edu-degree">Insinööri (AMK) — Tietotekniikka</div></div>
-        <div class="edu-date">2021 — 2025</div>
-      </div>
-      <div class="edu-row">
-        <div><div class="edu-school">Careeria</div><div class="edu-degree">Ammatillinen perustutkinto — Tieto- ja viestintätekniikka</div></div>
-        <div class="edu-date">2020 — 2021</div>
-      </div>
-      <div class="edu-row">
-        <div><div class="edu-school">Jyväskylän Ammattiopisto</div><div class="edu-degree">Ammatillinen perustutkinto — Rakennusala</div></div>
-        <div class="edu-date">2012 — 2015</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section id="vapaa-aika">
-  <div class="wrap">
-    <div class="section-head reveal">
-      <span class="num">05</span>
-      <div><h2>Vapaa-ajalla</h2><div class="section-sub">&nbsp;</div></div>
-    </div>
-    <div class="personal reveal">
-      <img src="images/surf.jpg" alt="Surffikurssi Gold Coastilla, Australiassa">
-      <div class="personal-copy">
-        <span class="tag">Aktiivinen arki</span>
-        <h3>Jääkiekkoa, salia, tennistä — ja surffia aina kun tilaisuus antaa myöten</h3>
-        <p>Kuvassa surffikurssilta Gold Coastilta, Australiasta. Sama periksiantamattomuus kulkee mukana niin harrastuksissa kuin työssä.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<footer id="yhteystiedot">
-  <div class="wrap">
-    <h2>Jutellaanko?</h2>
-    <p>Avoinna uusille mahdollisuuksille teknologian, laadunvalvonnan ja asiakastyön risteyksessä.</p>
-    <div class="contact-grid">
-      <div class="contact-item"><div class="k">Sähköposti</div><a href="mailto:rautavirtajaime@gmail.com">rautavirtajaime@gmail.com</a></div>
-      <div class="contact-item"><div class="k">Puhelin</div><a href="tel:+358504386858">050 438 6858</a></div>
-      <div class="contact-item"><div class="k">Sijainti</div><span>Tuusula, Suomi</span></div>
-      <div class="contact-item"><div class="k">GitHub</div><a href="https://RautavirtaJaime.github.io" target="_blank" rel="noopener">RautavirtaJaime.github.io</a></div>
-    </div>
-    <div class="foot-bottom">
-      <span>© 2026 Jaime Rautavirta</span>
-      <span>Rakennettu Vantaalla / Tuusulassa</span>
-    </div>
-  </div>
-</footer>
-
-<script>
-  const els = document.querySelectorAll('.reveal');
-  const io = new IntersectionObserver((entries)=>{
-    entries.forEach(e=>{
-      if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
-    });
-  },{threshold:0.15});
-  els.forEach(el=>io.observe(el));
-</script>
-
+  </section>
+  <section class="journey section-wrap" id="matka" aria-labelledby="journey-title"><div class="section-kicker"><span>04 / MATKA TÄHÄN</span><span>EI AIVAN SUORA VIIVA</span></div><div class="journey-layout"><div class="journey-heading"><h2 id="journey-title">Tekemällä<br>eteenpäin<span class="accent-period">.</span></h2><p>Jokainen vaihe on opettanut jotain, jota käytän edelleen.</p><button class="text-link print-cv" type="button">Tulosta CV <span>↗</span></button></div><div class="timeline">
+      <article class="timeline-item current"><div class="timeline-year">2026 — NYT <span>NYKYINEN ROOLI</span></div><h3>Buyback-myynti</h3><h4>Inrego Oy</h4><p>Yritysasiakkuudet, käytöstä poistuvien IT-laitteiden takaisinosto sekä sujuvan nouto- ja käsittelyprosessin koordinointi.</p></article>
+      <article class="timeline-item"><div class="timeline-year">2022 — 2026</div><h3>IT-teknikko</h3><h4>Inrego Oy</h4><p>IT- ja mobiililaitteiden testaus, Blancco-tyhjennys, laatuluokittelu, hallintalukitusten selvittely ja vaativammat käsittelytapaukset.</p></article>
+      <article class="timeline-item"><div class="timeline-year">2022 — 2024</div><h3>Yrittäjä</h3><h4>Rautavirta Tmi</h4><p>Verkkosivuja, mainostoteutuksia, hakukoneoptimointia ja asennustöitä asiakkaiden tarpeisiin.</p></article>
+      <article class="timeline-item"><div class="timeline-year">2016 — 2022</div><h3>Asiakaskoordinointi</h3><h4>Grano Oy</h4><p>Asiakastarpeiden kartoitusta, toteutusten suunnittelua ja koordinointia sekä yhteistyötä teknisen tiimin kanssa.</p></article>
+      <article class="timeline-item"><div class="timeline-year">2012 — 2015</div><h3>Käytännön tekijän alku</h3><h4>Staar · oppisopimus</h4><p>Peruskorjauksia ja kylpyhuoneremontteja. Ongelmanratkaisua jo ennen kuin työkalupakkiin tuli näppäimistö.</p></article>
+    </div></div>
+    <div class="education-block"><div><span class="section-label">KOULUTUS</span><h3>Pohjaa tekemiselle.<br>Tilaa uudelle.</h3></div><div class="education-list"><article><span class="edu-mark">↗</span><div><h4>Metropolia Ammattikorkeakoulu</h4><p>Tieto- ja viestintätekniikan insinööriopinnot</p></div><span class="edu-status">LOPPUSUORALLA</span></article><article><span class="edu-mark">✓</span><div><h4>Careeria</h4><p>Tieto- ja viestintätekniikan perustutkinto</p></div><span class="edu-status">2020 — 2021</span></article><article><span class="edu-mark">✓</span><div><h4>Jyväskylän ammattiopisto</h4><p>Rakennusalan perustutkinto</p></div><span class="edu-status">2012 — 2015</span></article></div></div>
+  </section>
+  <section class="offline-section section-wrap" aria-labelledby="offline-title"><div class="offline-image"><img src="images/surf.jpg" alt="Jaime surffikurssilla Gold Coastin rannalla Australiassa" width="1600" height="966" loading="lazy"><span class="photo-caption">GOLD COAST, AUSTRALIA / OFFLINE MODE</span></div><div class="offline-copy"><span class="section-label">05 / NÄYTÖN ULKOPUOLELLA</span><h2 id="offline-title">Sama uteliaisuus.<br><span class="muted">Eri ympäristö.</span></h2><p>Vapaa-ajalla vaihdan välillä näppäimistön mailaan, painoihin tai surffilautaan. Uutta oppii parhaiten, kun uskaltaa olla ensin vähän aloittelija.</p><div class="offline-tags"><span>Jääkiekko</span><span>Sali</span><span>Tennis</span><span>Surffi</span></div><span class="handwritten">Aina jotain uutta opittavaa. ↗</span></div></section>
+  <section class="contact-section" id="yhteys" aria-labelledby="contact-title"><div class="section-wrap"><div class="section-kicker light"><span>06 / SEURAAVA ASKEL</span><span>TUUSULA, FI <span class="live-dot"></span></span></div><div class="contact-main"><h2 id="contact-title">Tehdään jotain<br><span>toimivaa.</span><a href="mailto:rautavirtajaime@gmail.com" class="contact-orb" aria-label="Lähetä sähköpostia Jaimelle">↗</a></h2><p>Tekninen haaste, kiinnostava mahdollisuus tai ihan vain hyvä keskustelu? Laita viestiä.</p></div><div class="contact-details"><div><span class="section-label">SÄHKÖPOSTI</span><a href="mailto:rautavirtajaime@gmail.com">rautavirtajaime@gmail.com ↗</a><button id="copy-email" class="copy-button" type="button">Kopioi osoite <span>⧉</span></button></div><div><span class="section-label">PUHELIN</span><a href="tel:+358504386858">050 438 6858 ↗</a></div><div><span class="section-label">LISÄÄ TEKEMISTÄ</span><a href="https://github.com/RautavirtaJaime" target="_blank" rel="noopener noreferrer">GitHub ↗</a><button class="print-cv text-link" type="button">Tulosta CV ↗</button></div></div><footer><a class="footer-brand" href="#alku">JAIME RAUTAVIRTA<span>↗</span></a><span>© <span id="year">2026</span> · AJATUKSELLA, TUUSULASSA.</span><button class="top-button" type="button">Takaisin alkuun ↑</button></footer></div></section>
+</main>
+<dialog id="case-dialog" aria-labelledby="case-title"><button class="dialog-close icon-button" aria-label="Sulje projektin tiedot">×</button><div class="dialog-content"><span class="panel-eyebrow" id="case-category"></span><h2 id="case-title"></h2><p id="case-intro"></p><div id="case-body"></div><button class="button button-dark dialog-dismiss" type="button">Takaisin portfolioon <span>↗</span></button></div></dialog>
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+<noscript><style>.skill-tab{display:none}.skill-panel[hidden]{display:block}.work-row{cursor:default}.hero-lab:after{content:'IT × IHMISET × KIERTOTALOUS';position:absolute;top:40%;left:10%;font-size:24px}.drag-hint,.lab-controls,.print-cv,#copy-email,#motion-toggle{display:none}</style></noscript>
 </body>
 </html>
